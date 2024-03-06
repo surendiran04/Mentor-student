@@ -5,9 +5,9 @@ const { createStudents, changeStudentMentor, getStudents,getpreviousMentors } = 
 
 router.put("/assignstudent",AssignStudent)
 router.post("/creatementor",createMentor)
-router.get("/:id/assignedstudents", getStudentsbyMentor);
+router.get("/assignedstudents/:Id", getStudentsbyMentor);
 router.get("/",getStudents)
-router.get("/:id/previousmentors",getpreviousMentors);
+router.get("/previousmentors/:Id",getpreviousMentors);
 router.post("/createstudent",createStudents)
 router.put("/changestudentmentor/:Id",changeStudentMentor);
 

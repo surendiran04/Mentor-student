@@ -42,12 +42,9 @@ const createStudents = async (req, res) => {
       if (!student) {
         return res.status(404).send({ message: "Student not found" });
       }
-      const currentMentor = {
-          MentorId: student.MentorAssigned.MentorId,
-          MentorName: student.MentorAssigned.MentorName,
-          AssignedAt: new Date()
-        };
-        student.MentorHistory.push(currentMentor);
+      student.MentorHistory.MentorId= student.MentorAssigned.MentorId,
+      student.MentorHistory.MentorName=student.MentorAssigned.MentorName,
+      student.MentorHistory.AssignedAt=new Date()
   
         student.MentorAssigned = {
           MentorId: newMentorId,
@@ -67,7 +64,7 @@ const createStudents = async (req, res) => {
   
   const getpreviousMentors = async (req, res) => {
       try {
-        const student = await StudentsModel.findOne({ StudentId: req.params.id});
+        const student = await StudentsModel.findOne({ StudentId: req.params.Id});
     
         if (!student) {
           return res.status(404).send({ message: "Student not found" });
