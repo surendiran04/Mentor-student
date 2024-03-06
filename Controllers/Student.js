@@ -54,7 +54,7 @@ const createStudents = async (req, res) => {
         await student.save();
       res
         .status(200)
-        .send({ message: "Mentor changed for student successfully" });
+        .send({ message: "Mentor changed for student successfully", student });
     } catch (error) {
       res
         .status(500)
