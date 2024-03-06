@@ -10,14 +10,14 @@ const studentSChema = new mongoose.Schema({
     required: true,
 },
 MentorAssigned: {
-    MentorId: { type: Number },
-    MentorName: { type: String },
+    MentorId: {type:Number},
+    MentorName: {type:String },
 },
-MentorHistory: [{
+MentorHistory: {
     MentorId: Number,
     MentorName: String,
     AssignedAt: { type: Date, default: Date.now }
-}],
+},
 });
 
 const studentModel=mongoose.model('students',studentSChema);

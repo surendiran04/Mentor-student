@@ -3,20 +3,22 @@ const mentorModel = require('../Models/Mentor.schema.js')
 const createMentor=async(req,res)=>{
 
     try {
-        const Mentor = await mentorModel.findOne({ MentorId: req.body.MentorId });
-    
-        if (!Mentor) {
-          const newMentor = new mentorModel({
-            MentorId: req.body.MentorId,
-            MentorName: req.body.MentorName,
-            studentsAssigned:[],
-          });
-          await newMentor.save();
-            res.status(200).send({message:"Mentors Data Created Successfully",
-            newMentor})
+        const existingMentor = await mentorModel.findOne({ MentorId: req.body.MentorId });
+        let newMentor = await mentorModel(req.body);
+        if(existingMentor) {
+            res.status(400).send({message:"Mentor data already exists"})
+        //   const newMentor = new mentorModel({
+        //     MentorId: req.body.MentorId,
+        //     MentorName: req.body.MentorName,
+        //     studentsAssigned:[],
+        //   });
+          
         }
         else
-        res.status(400).send({message:"Mentor data already exists"})
+        await newMentor.save();
+            res.status(200).send({message:"Mentors Data Created Successfully",
+            newMentor})
+       
     } catch (error) {
         res.status(500).send({message:"Internal Server Error",error:error.message})
     }
@@ -24,7 +26,7 @@ const createMentor=async(req,res)=>{
 
 const AssignStudent= async(req,res)=>{
     try {
-        const mentor = await mentorModel.findOne({ MentorId: req.body.MentorId, MentorName: req.body.MentorName });
+        const mentor = await mentorModel.findOne({ MentorId: req.body.MentorId });
         if (!mentor) {
           return res.status(404).send({ message: "Mentor not found" });
         }
@@ -32,12 +34,12 @@ const AssignStudent= async(req,res)=>{
         if (existingStudent) {
             return res.status(400).send({ message: "Student already assigned to this mentor" });
         }
-        const newStudent = {
-            studentId: req.body.StudentId,
-            studentName: req.body.StudentName
-        };
+        const newStudents = req.body.studentsAssigned;   //                                
+        newStudents.forEach((i)=>{
+            mentor.studentsAssigned.push(i);
 
-        mentor.studentsAssigned.push(newStudent);
+        })
+           
         await mentor.save();
         res.status(200).send({message:"Student assigned to this mentor Successfully"})
     } catch (error) {

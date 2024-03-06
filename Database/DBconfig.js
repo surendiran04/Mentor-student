@@ -3,7 +3,7 @@ require('dotenv').config();
 
 function setUpDBConnection(){
     return mongoose
-    .connect(`${process.env.DB_URL}/${process.env.DB_NAME}`)///StudentMentor
+    .connect(`${process.env.DB_URL}`)///StudentMentor
     .then((res)=>{
         console.log('Database connected successfully')
     })

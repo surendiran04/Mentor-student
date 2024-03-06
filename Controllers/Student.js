@@ -1,25 +1,17 @@
 const StudentsModel = require('../Models/Student.schema.js')
 const createStudents = async (req, res) => {
     try {
-      let Student = await StudentsModel.findOne({
-        StudentId: req.body.StudentId,
-      });
-      if (!Student) {
-        const newStudent = new StudentsModel({
-          StudentId: req.body.StudentId,
-          StudentName: req.body.StudentName,
-          MentorAssigned: {
-            MentorId: null,
-            MentorName: null,
-          },
-        });
-        await newStudent.save();
-  
-        res
-          .status(200)
-          .send({ message: "Student Data Created Successfully", newStudent });
-      } else
+      let newStudent = await StudentsModel(req.body);
+      let existingStudent = await StudentsModel.findOne({ StudentId: req.body.StudentId }); 
+      if(existingStudent) {
         res.status(400).send({ message: "Student Data Already exists", Student });
+        }
+        else{
+        res
+        .status(200)
+          .send({ message: "Student Data Created Successfully", newStudent });
+          await newStudent.save();
+        }
     } catch (error) {
       res
         .status(500)
